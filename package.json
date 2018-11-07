@@ -1,0 +1,39 @@
+{
+  "name": "lit-haunted-todo",
+  "version": "1.0.0",
+  "description": "lit-html + Haunted TodoMVC Example",
+  "browser": "todo-manager.js",
+  "scripts": {
+    "start": "polymer serve -o",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pinkhominid/lit-haunted-todo.git"
+  },
+  "keywords": [
+    "lit-html",
+    "haunted",
+    "todomvc",
+    "react",
+    "hooks",
+    "lit",
+    "todo",
+    "example",
+    "webcomponents",
+    "customelements"
+  ],
+  "author": "pinkhominid <pinkhominid@birdbomb.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pinkhominid/lit-haunted-todo/issues"
+  },
+  "homepage": "https://github.com/pinkhominid/lit-haunted-todo#readme",
+  "devDependencies": {
+    "polymer-cli": "^1.8.1"
+  },
+  "dependencies": {
+    "@matthewp/haunted": "^1.6.2",
+    "lit-html": "^0.12.0"
+  }
+}
