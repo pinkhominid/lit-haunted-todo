@@ -1,16 +1,17 @@
 import {html} from 'lit-html';
-import {component} from '@matthewp/haunted';
+import {component, useEffect} from '@matthewp/haunted';
 import {blockStyle} from './block-style';
 
 function CheckItem(host) {
-  // todo: dispatch change event on prop or attr change?
+  useEffect(() => {
+    // reflect prop to attr
+    host[`${host.checked ? 'set' : 'remove'}Attribute`]('checked', '');
 
-  // reflect prop to attr
-  host[`${host.checked ? 'set' : 'remove'}Attribute`]('checked', '');
+    host.dispatchEvent(new CustomEvent('change', {bubbles: true}));
+  }, [host.checked]);
 
   function onCheckboxChange(evt) {
     host.checked = evt.target.checked;
-    host.dispatchEvent(new CustomEvent('change', {bubbles: true}));
   }
 
   return html`
