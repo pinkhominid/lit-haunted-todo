@@ -34,6 +34,15 @@ function TodoManager(host) {
 
   router(routes);
 
+  useEffect(() => {
+    host.shadowRoot.querySelector('input[name=text]').focus();
+  }, []);
+
+  useEffect(() => {
+    const editable = host.shadowRoot.querySelector('.editing input');
+    if (editable) editable.select();
+  });
+
   return html`
     ${blockStyle}
 
@@ -62,7 +71,11 @@ function TodoManager(host) {
     <check-list ?hidden=${!hasTodos}>
       ${repeat(todos, todo => todo.id, todo => html`
         <div .hidden=${!filters[filter](todo)}>
-          <check-item .checked=${todo.checked} @change=${_onChangeTodoChecked(todo)}>
+          <check-item
+            class=${todo.editing ? 'editing' : ''}
+            .checked=${todo.checked}
+            @change=${_onChangeTodoChecked(todo)}
+          >
             <input
               .value=${todo.text}
               .hidden=${!todo.editing}
@@ -97,10 +110,6 @@ function TodoManager(host) {
       >Clear completed</button>
     </footer>
   `
-
-  // firstUpdated() {
-  //   this.shadowRoot.querySelector('input[name=text]').focus();
-  // }
 
   function _addTodo(todo) {
     todo = {...todo, id: state.lastId + 1};
@@ -150,10 +159,8 @@ function TodoManager(host) {
   }
 
   function _onDblclickTodo(todo) {
-    return async evt => {
+    return evt => {
       _updateTodos({editing: true}, todo);
-      // await this.updateComplete
-      evt.target.previousElementSibling.focus();
     }
   }
 
@@ -162,7 +169,7 @@ function TodoManager(host) {
       if (evt.key === 'Enter') {
         _updateTodos({editing: false, text: evt.target.value.trim()}, todo);
       } else if (evt.key === 'Escape') {
-        // todo: figure out why input is persisting old value, workaround for now
+        // TODO: figure out why input is holding old value, workaround for now
         evt.target.value = todo.text;
         _updateTodos({editing: false}, todo);
       }
