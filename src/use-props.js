@@ -5,15 +5,15 @@ export function useProps(propsDef) {
     const def = propsDef[name];
 
     // initialize
-    if (def.initVal !== undefined) {
-      useEffect(() => {
+    useEffect(() => {
+      if (def.initVal !== undefined) {
         if (this[name] === undefined) this[name] = def.initVal;
-      }, []);
-    }
+      }
+    }, []);
 
     // reflect
-    if (def.reflect) {
-      useEffect(() => {
+    useEffect(() => {
+      if (def.reflect) {
         switch (def.type) {
           case Boolean:
             this[`${this[name] ? 'set' : 'remove'}Attribute`](name, '');
@@ -23,7 +23,7 @@ export function useProps(propsDef) {
           default:
             this.setAttribute(name, this[name]);
         }
-      }, [this[name]]);
-    }
+      }
+    }, [this[name]]);
   }
 };
