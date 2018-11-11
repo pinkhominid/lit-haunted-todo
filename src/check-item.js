@@ -1,17 +1,18 @@
 import {html} from 'lit-html';
-import {component, useEffect} from '@matthewp/haunted';
+import {component} from '@matthewp/haunted';
+import {useProps} from './use-props';
 import {blockStyle} from './block-style';
 
-function CheckItem(host) {
-  useEffect(() => {
-    // reflect prop to attr
-    host[`${host.checked ? 'set' : 'remove'}Attribute`]('checked', '');
+CheckItem.observedAttributes = ['checked'];
 
-    host.dispatchEvent(new CustomEvent('change', {bubbles: true}));
-  }, [host.checked]);
+function CheckItem(host) {
+  useProps.bind(host)({
+    checked: {type: Boolean, reflect: true, initVal: false}
+  });
 
   function onCheckboxChange(evt) {
-    host.checked = evt.target.checked;
+    host.checked = evt.target.checked
+    host.dispatchEvent(new CustomEvent('change', {bubbles: true}));
   }
 
   return html`
@@ -20,7 +21,5 @@ function CheckItem(host) {
     <slot></slot>
   `;
 }
-
-CheckItem.observedAttributes = ['checked'];
 
 customElements.define('check-item', component(CheckItem));
